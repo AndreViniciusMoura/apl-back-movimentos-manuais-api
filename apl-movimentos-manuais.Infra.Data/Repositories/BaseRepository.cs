@@ -1,7 +1,9 @@
 ﻿using apl_movimentos_manuais.Domain.Interfaces.Respositories;
 using apl_movimentos_manuais.Infra.Persistence;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace apl_movimentos_manuais.Infra.Data.Repositories
 {
@@ -24,9 +26,9 @@ namespace apl_movimentos_manuais.Infra.Data.Repositories
 
         #region Methods
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
-            return _unitOfWork.Context.Set<T>().AsParallel().AsEnumerable<T>();
+            return await _unitOfWork.Context.Set<T>().AsNoTracking().ToListAsync();
         }
 
         #endregion
