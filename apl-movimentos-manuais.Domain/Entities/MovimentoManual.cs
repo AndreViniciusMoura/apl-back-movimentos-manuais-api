@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace apl_movimentos_manuais.Domain.Entities
 {
-    public class MovimentoManual
+    public class MovimentoManual : Entity
     {
         #region Properties
 

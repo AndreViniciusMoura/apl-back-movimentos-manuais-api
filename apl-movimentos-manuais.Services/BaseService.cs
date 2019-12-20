@@ -1,42 +1,57 @@
-﻿using apl_movimentos_manuais.Domain.Interfaces.Respositories;
+﻿using apl_movimentos_manuais.Domain.Entities;
+using apl_movimentos_manuais.Domain.Entities.Notificacoes;
+using apl_movimentos_manuais.Domain.Interfaces.Respositories;
 using apl_movimentos_manuais.Domain.Interfaces.Services;
 using apl_movimentos_manuais.Infra.Persistence;
+using FluentValidation;
+using FluentValidation.Results;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace apl_movimentos_manuais.Services
 {
-    public class BaseService<T> : IBaseService<T> where T : class
+    public class BaseService
     {
         #region Properties
 
-        protected readonly IUnitOfWork _unitOfWork;
-        protected readonly IBaseRepository<T> _baseRepository;
+        private readonly INotificadorService _notificadorService;
 
         #endregion
 
         #region Construtor
 
-        public BaseService(IUnitOfWork unitOfWork, IBaseRepository<T> baseRepository)
+        public BaseService(INotificadorService notificadorService)
         {
-            _unitOfWork = unitOfWork;
-            _baseRepository = baseRepository;
+            _notificadorService = notificadorService;
         }
 
         #endregion
 
         #region Methods
 
-        //public virtual void Insert(T entity)
-        //{
-        //    _movimentoRepository.Insert(entity);
-        //    _unitOfWork.Commit();
-        //}
-
-        public virtual async Task<IEnumerable<T>> GetAll()
+        protected void Notificar(ValidationResult validationResult)
         {
-            return await _baseRepository.GetAll();
+            foreach (var error in validationResult.Errors)
+            {
+                Notificar(error.ErrorMessage);
+            }
         }
+
+        protected void Notificar(string mensagem)
+        {
+            _notificadorService.Handle(new Notificacao(mensagem));
+        }
+
+        //protected bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE : Entity
+        //{
+        //    var validator = validacao.Validate(entidade);
+
+        //    if (validator.IsValid) return true;
+
+        //    Notificar(validator);
+
+        //    return false;
+        //}
 
         #endregion
     }

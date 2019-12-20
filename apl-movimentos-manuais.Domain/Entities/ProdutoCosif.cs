@@ -2,7 +2,7 @@
 
 namespace apl_movimentos_manuais.Domain.Entities
 {
-    public class ProdutoCosif
+    public class ProdutoCosif : Entity
     {
         #region Properties
 

@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "apl-movimentos-manuais.Infr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "apl-movimentos-manuais.Infra.Persistence", "apl-movimentos-manuais.Infra.Persistence\apl-movimentos-manuais.Infra.Persistence.csproj", "{A500691A-284C-4924-AB15-8007C50D6FE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "apl-movimentos-manuais.Api", "apl-movimentos-manuais.Api\apl-movimentos-manuais.Api.csproj", "{E358287E-C243-4935-83AD-880ED68E987A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "apl-movimentos-manuais.Api", "apl-movimentos-manuais.Api\apl-movimentos-manuais.Api.csproj", "{E358287E-C243-4935-83AD-880ED68E987A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

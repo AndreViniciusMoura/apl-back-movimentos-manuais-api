@@ -5,8 +5,8 @@ using System.Text;
 
 namespace apl_movimentos_manuais.Domain.Interfaces.Respositories
 {
-    public interface IMovimentoManualRepository : IBaseRepository<MovimentoManual>
+    public interface IProdutoRepository: IBaseRepository<Produto>
     {
-        IEnumerable<MovimentoManual> GetByMonthYear(int month, int year);
+
     }
 }

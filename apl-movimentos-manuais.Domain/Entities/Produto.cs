@@ -2,7 +2,7 @@
 
 namespace apl_movimentos_manuais.Domain.Entities
 {
-    public class Produto
+    public class Produto : Entity
     {
         #region Properties
 

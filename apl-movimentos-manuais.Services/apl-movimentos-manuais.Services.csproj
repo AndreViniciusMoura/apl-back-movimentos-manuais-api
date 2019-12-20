@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="8.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\apl-movimentos-manuais.Infra.Persistence\apl-movimentos-manuais.Infra.Persistence.csproj" />
   </ItemGroup>
 
