@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace apl_movimentos_manuais.Infra.Data.UnitOfWork
 {
@@ -38,14 +39,14 @@ namespace apl_movimentos_manuais.Infra.Data.UnitOfWork
 
         #region Metodos
 
-        public void Commit()
+        public async Task<int> SaveChanges()
         {
-            Context.SaveChanges();
+            return await Context.SaveChangesAsync();
         }
 
         public void Dispose()
         {
-            Context.Dispose();
+            Context?.Dispose();
 
         }
 

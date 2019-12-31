@@ -21,9 +21,11 @@ namespace apl_movimentos_manuais.Domain.Interfaces.Respositories
 
         Task AddRange(IEnumerable<T> entities);
 
-        Task Remove(T entity);
+        Task Update(T entity);
 
-        Task RemoveRange(IEnumerable<T> entities);
+        Task Delete(T entity);
+
+        Task DeleteRange(IEnumerable<T> entities);
 
     }
 }

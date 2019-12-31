@@ -4,6 +4,7 @@ using apl_movimentos_manuais.Domain.Interfaces.Services;
 using apl_movimentos_manuais.Infra.Persistence;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -36,6 +37,55 @@ namespace apl_movimentos_manuais.Services.Produtos
         public async Task<Produto> GetById(Guid id)
         {
             return await _unitOfWork.ProdutoRepository.SingleOrDefault(p => p.CodProduto == id.ToString());
+        }
+
+        public async Task<bool> Adicionar(Produto produto)
+        {
+            //if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)
+            //    || !ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco)) return false;
+
+            if (_unitOfWork.ProdutoRepository.Find(p => p.DesProduto == produto.DesProduto).Result.Any())
+            {
+                Notificar("Já existe um produto com a descrição informada.");
+                return false;
+            }
+
+            await _unitOfWork.ProdutoRepository.Add(produto);
+            await _unitOfWork.SaveChanges();
+
+            return true;
+        }
+
+        public async Task<bool> Atualizar(Produto produto)
+        {
+            //if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)) return false;
+
+            if (_unitOfWork.ProdutoRepository.Find(f => f.DesProduto == produto.DesProduto && f.CodProduto != produto.CodProduto).Result.Any())
+            {
+                Notificar("Já existe um produto com a descrição informada.");
+                return false;
+            }
+
+            await _unitOfWork.ProdutoRepository.Update(produto);
+            await _unitOfWork.SaveChanges();
+
+            return true;
+        }
+
+        public async Task<bool> Remover(long id)
+        {
+            var produto = _unitOfWork.ProdutoRepository.Get(id).Result;
+
+            if (produto is null) return false;
+
+            await _unitOfWork.ProdutoRepository.Delete(produto);
+
+            return true;
+        }
+
+        public void Dispose()
+        {
+            _unitOfWork?.Dispose();
         }
 
         #endregion

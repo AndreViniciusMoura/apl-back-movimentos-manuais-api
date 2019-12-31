@@ -66,12 +66,17 @@ namespace apl_movimentos_manuais.Infra.Data.Repositories
             await _dbContext.Set<T>().AddRangeAsync(entities);
         }
 
-        public async Task Remove(T entity)
+        public virtual async Task Update(T entity)
+        {
+           _dbContext.Update<T>(entity);
+        }
+
+        public async Task Delete(T entity)
         {
             await _dbContext.Set<T>().Remove(entity).ReloadAsync();
         }
 
-        public async Task RemoveRange(IEnumerable<T> entities)
+        public async Task DeleteRange(IEnumerable<T> entities)
         {
             _dbContext.Set<T>().RemoveRange(entities);
         }

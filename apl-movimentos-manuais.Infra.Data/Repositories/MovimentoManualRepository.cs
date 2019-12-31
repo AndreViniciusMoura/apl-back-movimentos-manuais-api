@@ -14,7 +14,7 @@ namespace apl_movimentos_manuais.Infra.Data.Repositories
     {
         #region Propriedades
 
-        private readonly MovimentosManuaisContext _context;
+        //private readonly MovimentosManuaisContext _context;
 
         #endregion
 
@@ -22,7 +22,7 @@ namespace apl_movimentos_manuais.Infra.Data.Repositories
 
         public MovimentoManualRepository(MovimentosManuaisContext context) : base(context)
         {
-            _context = context;
+            //_context = context;
         }
 
         #endregion
@@ -31,7 +31,7 @@ namespace apl_movimentos_manuais.Infra.Data.Repositories
 
         public IEnumerable<MovimentoManual> GetByMonthYear(int month, int year)
         {
-            return _context.Set<MovimentoManual>().Include(i => i.Cod)
+            return _dbContext.Set<MovimentoManual>().Include(i => i.Cod)
                                                       .ThenInclude(i => i.CodProdutoNavigation)
                                                   .AsNoTracking().Where(m => m.DataMes == month && m.DataAno == year);
         }

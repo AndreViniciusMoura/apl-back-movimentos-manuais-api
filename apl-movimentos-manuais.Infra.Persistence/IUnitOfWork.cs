@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace apl_movimentos_manuais.Infra.Persistence
 {
-    public interface IUnitOfWork
+    public interface IUnitOfWork : IDisposable
     {
         #region Repositories
 
@@ -18,6 +19,6 @@ namespace apl_movimentos_manuais.Infra.Persistence
 
         DbContext Context { get; }
 
-        void Commit();
+        Task<int> SaveChanges();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using apl_movimentos_manuais.Api.ViewModels;
+using apl_movimentos_manuais.Domain.Entities;
 using apl_movimentos_manuais.Domain.Interfaces.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -58,9 +59,33 @@ namespace apl_movimentos_manuais.Api.Controllers.V1
         [HttpGet("{id:guid}")]
         public async Task<ActionResult<ProdutoViewModel>> GetProdutoById(Guid id)
         {
-            var produto = await _produtoService.GetById(id);
+            try
+            {
+                var produto = await _produtoService.GetById(id);
 
-            var produtoViewModel = _mapper.Map<ProdutoViewModel>(produto);
+                var produtoViewModel = _mapper.Map<ProdutoViewModel>(produto);
+
+                return Ok(produtoViewModel);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ProdutoViewModel>> Adicionar(ProdutoViewModel produtoViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return null;
+            }
+
+            var produto = _mapper.Map<Produto>(produtoViewModel);
+
+            await _produtoService.Adicionar(produto);
+
+            produtoViewModel = _mapper.Map<ProdutoViewModel>(produto);
 
             return Ok(produtoViewModel);
         }
