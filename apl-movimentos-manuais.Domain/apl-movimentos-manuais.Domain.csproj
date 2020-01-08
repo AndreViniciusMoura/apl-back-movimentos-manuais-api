@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Validations\" />
+    <PackageReference Include="FluentValidation" Version="8.5.0" />
   </ItemGroup>
 
 </Project>

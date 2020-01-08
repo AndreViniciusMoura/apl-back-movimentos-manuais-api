@@ -12,14 +12,13 @@ namespace apl_movimentos_manuais.Api.Controllers.V1
     /// <summary>
     /// Controller Produtos
     /// </summary>
-    //[ApiVersion("1.0")]
-    [Route("apl-movimentos-manuais/api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("apl-movimentos-manuais/api/v{version:apiVersion}/[controller]")]
     public class ProdutosController : MainController
     {
         #region Propriedades
 
         protected readonly IProdutoService _produtoService;
-        private readonly INotificadorService _notificadorService;
         private readonly IMapper _mapper;
 
         #endregion
@@ -28,10 +27,9 @@ namespace apl_movimentos_manuais.Api.Controllers.V1
 
         public ProdutosController(IProdutoService produtoService,
                                   INotificadorService notificadorService,
-                                  IMapper mapper)
+                                  IMapper mapper) : base(notificadorService)
         {
             _produtoService = produtoService;
-            _notificadorService = notificadorService;
             _mapper = mapper;
         }
 
@@ -48,7 +46,7 @@ namespace apl_movimentos_manuais.Api.Controllers.V1
 
                 var produtosViewModel = _mapper.Map<IEnumerable<ProdutoViewModel>>(produtos);
 
-                return Ok(produtosViewModel);
+                return CustomResponse(produtosViewModel);
             }
             catch (Exception ex)
             {
@@ -56,16 +54,16 @@ namespace apl_movimentos_manuais.Api.Controllers.V1
             }
         }
 
-        [HttpGet("{id:guid}")]
-        public async Task<ActionResult<ProdutoViewModel>> GetProdutoById(Guid id)
+        [HttpGet("{codProduto:guid}")]
+        public async Task<ActionResult<ProdutoViewModel>> GetProdutoById(Guid codProduto)
         {
             try
             {
-                var produto = await _produtoService.GetById(id);
+                var produto = await _produtoService.GetById(codProduto);
 
                 var produtoViewModel = _mapper.Map<ProdutoViewModel>(produto);
 
-                return Ok(produtoViewModel);
+                return CustomResponse(produtoViewModel);
             }
             catch (Exception ex)
             {
@@ -76,10 +74,7 @@ namespace apl_movimentos_manuais.Api.Controllers.V1
         [HttpPost]
         public async Task<ActionResult<ProdutoViewModel>> Adicionar(ProdutoViewModel produtoViewModel)
         {
-            if (!ModelState.IsValid)
-            {
-                return null;
-            }
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var produto = _mapper.Map<Produto>(produtoViewModel);
 
@@ -87,8 +82,42 @@ namespace apl_movimentos_manuais.Api.Controllers.V1
 
             produtoViewModel = _mapper.Map<ProdutoViewModel>(produto);
 
-            return Ok(produtoViewModel);
+            return CustomResponse(produtoViewModel);
         }
+
+        [HttpPut("{codProduto:guid}")]
+        public async Task<ActionResult<ProdutoViewModel>> Atualizar(Guid codProduto, ProdutoViewModel produtoViewModel)
+        {
+            if (codProduto.ToString().ToUpper() != produtoViewModel.CodProduto.ToUpper())
+            {
+                NotificarErro("O id informado não é o mesmo que foi passado na query");
+                return CustomResponse(produtoViewModel);
+            }
+
+            if (!ModelState.IsValid) return CustomResponse(ModelState);
+
+            var produto = _mapper.Map<Produto>(produtoViewModel);
+
+            var result = await _produtoService.Atualizar(produto);
+
+            if (!result) return BadRequest();
+
+            return CustomResponse(produtoViewModel);
+
+        }
+
+        [HttpDelete("{codProduto:guid}")]
+        public async Task<ActionResult<ProdutoViewModel>> Excluir(Guid codProduto)
+        {
+            var produtoViewModel = await _produtoService.GetById(codProduto);
+
+            if (produtoViewModel is null) return NotFound();
+
+            await _produtoService.Remover(produtoViewModel.CodProduto.ToString());
+
+            return CustomResponse(produtoViewModel);
+        }
+
 
         #endregion
     }

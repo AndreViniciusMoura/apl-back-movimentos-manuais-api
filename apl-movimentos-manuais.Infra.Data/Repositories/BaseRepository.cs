@@ -73,7 +73,7 @@ namespace apl_movimentos_manuais.Infra.Data.Repositories
 
         public async Task Delete(T entity)
         {
-            await _dbContext.Set<T>().Remove(entity).ReloadAsync();
+            _dbContext.Set<T>().Remove(entity);
         }
 
         public async Task DeleteRange(IEnumerable<T> entities)

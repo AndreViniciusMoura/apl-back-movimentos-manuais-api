@@ -42,16 +42,16 @@ namespace apl_movimentos_manuais.Services
             _notificadorService.Handle(new Notificacao(mensagem));
         }
 
-        //protected bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE : Entity
-        //{
-        //    var validator = validacao.Validate(entidade);
+        protected bool ExecutarValidacao<TV, TE>(TV validacao, TE entidade) where TV : AbstractValidator<TE> where TE : Entity
+        {
+            var validator = validacao.Validate(entidade);
 
-        //    if (validator.IsValid) return true;
+            if (validator.IsValid) return true;
 
-        //    Notificar(validator);
+            Notificar(validator);
 
-        //    return false;
-        //}
+            return false;
+        }
 
         #endregion
     }

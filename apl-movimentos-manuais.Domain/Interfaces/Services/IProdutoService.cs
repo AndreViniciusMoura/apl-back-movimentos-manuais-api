@@ -15,6 +15,6 @@ namespace apl_movimentos_manuais.Domain.Interfaces.Services
 
         Task<bool> Atualizar(Produto produto);
 
-        Task<bool> Remover(long id);
+        Task<bool> Remover(string codProduto);
     }
 }

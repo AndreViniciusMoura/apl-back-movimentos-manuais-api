@@ -36,13 +36,20 @@ namespace apl_movimentos_manuais.Api
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             services.AddDbContext<MovimentosManuaisContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            //Configurando o AutoMapper
             services.AddAutoMapper(typeof(Startup));
 
+            //Configurações da Api
             services.WebApiConfig();
 
             //Configurando a Injecao de dependencia

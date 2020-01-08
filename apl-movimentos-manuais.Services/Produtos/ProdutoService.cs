@@ -1,4 +1,5 @@
 ﻿using apl_movimentos_manuais.Domain.Entities;
+using apl_movimentos_manuais.Domain.Entities.Validations;
 using apl_movimentos_manuais.Domain.Interfaces.Respositories;
 using apl_movimentos_manuais.Domain.Interfaces.Services;
 using apl_movimentos_manuais.Infra.Persistence;
@@ -41,8 +42,7 @@ namespace apl_movimentos_manuais.Services.Produtos
 
         public async Task<bool> Adicionar(Produto produto)
         {
-            //if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)
-            //    || !ExecutarValidacao(new EnderecoValidation(), fornecedor.Endereco)) return false;
+            if (!ExecutarValidacao(new ProdutoValidation(), produto)) return false;
 
             if (_unitOfWork.ProdutoRepository.Find(p => p.DesProduto == produto.DesProduto).Result.Any())
             {
@@ -58,7 +58,7 @@ namespace apl_movimentos_manuais.Services.Produtos
 
         public async Task<bool> Atualizar(Produto produto)
         {
-            //if (!ExecutarValidacao(new FornecedorValidation(), fornecedor)) return false;
+            if (!ExecutarValidacao(new ProdutoValidation(), produto)) return false;
 
             if (_unitOfWork.ProdutoRepository.Find(f => f.DesProduto == produto.DesProduto && f.CodProduto != produto.CodProduto).Result.Any())
             {
@@ -72,13 +72,14 @@ namespace apl_movimentos_manuais.Services.Produtos
             return true;
         }
 
-        public async Task<bool> Remover(long id)
+        public async Task<bool> Remover(string codProduto)
         {
-            var produto = _unitOfWork.ProdutoRepository.Get(id).Result;
+            var produto = _unitOfWork.ProdutoRepository.SingleOrDefault(p => p.CodProduto == codProduto.ToString()).Result;
 
             if (produto is null) return false;
 
             await _unitOfWork.ProdutoRepository.Delete(produto);
+            await _unitOfWork.SaveChanges();
 
             return true;
         }
