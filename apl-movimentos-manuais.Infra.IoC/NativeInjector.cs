@@ -4,10 +4,13 @@ using apl_movimentos_manuais.Infra.Data.Repositories;
 using apl_movimentos_manuais.Infra.Data.UnitOfWork;
 using apl_movimentos_manuais.Infra.Persistence;
 using apl_movimentos_manuais.Infra.Persistence.Context;
+using apl_movimentos_manuais.Services;
 using apl_movimentos_manuais.Services.Notificacoes;
 using apl_movimentos_manuais.Services.Produtos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace apl_movimentos_manuais.Infra.IoC
 {
@@ -15,6 +18,9 @@ namespace apl_movimentos_manuais.Infra.IoC
     {
         public static IServiceCollection AddNativeInjector(this IServiceCollection services)
         {
+
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+
             #region Services
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
