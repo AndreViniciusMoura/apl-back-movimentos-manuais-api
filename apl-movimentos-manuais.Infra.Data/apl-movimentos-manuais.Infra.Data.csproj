@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RootNamespace>apl_movimentos_manuais.Infra.Data</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\apl-movimentos-manuais.Domain\apl-movimentos-manuais.Domain.csproj" />
+    <ProjectReference Include="..\apl-movimentos-manuais.Infra.Persistence\apl-movimentos-manuais.Infra.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>
